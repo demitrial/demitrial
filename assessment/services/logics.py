@@ -7,11 +7,11 @@ from sqlalchemy import exc
 
 def authorisation(fun):
     @wraps(fun)
-    def Admin(*args, **kwargs):
+    def Admin(**kwargs):
         check = request.headers.get("Token")
         key = os.environ.get("token")
         if check == key:
-            return fun(*args, **kwargs)
+            return fun(**kwargs)
         else:
             return "Unauthorized Admin access"
 
@@ -25,17 +25,14 @@ def add_user():
         for det in val:
             if data.get('username') == det.username:
                 return 'username is already in use., Please enter another name: '
-        var = Users(**data)
-        db.session.add(var)
+        send_data = Users(**data)
+        db.session.add(send_data)
         db.session.commit()
         return "User Added Successfully!"
-    except exc.IntegrityError:
-        return "Enter all fields correctly! "
-    except TypeError:
-        return "Entered field(s) are invalid! "
+    except Exception as t:
+        return f"Error : {t.args[:]}"
 
 
-@authorisation
 def getuserinfo():
     var_get_all = Users.query.all()
     totalusers = []
@@ -54,7 +51,7 @@ def login():
         check = Users.query.filter_by(username=input_name).first()
         verify = check.__dict__
         if verify.get('username') == input_name and verify.get('password') == input_pass:
-            return f'Hi {input_name} ., Now you can upload wasteproducts!!'
+            return f'Hi {input_name} ., Now you can upload wasted products!!'
         elif verify.get('username') == input_name or verify.get('password') == input_pass:
             return "Your password is incorrect! Please enter correct password.,"
     except AttributeError:
@@ -215,6 +212,6 @@ def sampleorder():
         var3 = Order(info=var_trial, typeinfo=var_type, shapeinfo=var1_shape)
         db.session.add(var3)
         db.session.commit()
-        return f"Order placed successfully! <AND     > your order details are username = {va},  Plastic_type = {var},   Shape = {shapes}  "
-    except exc.IntegrityError:
+        return f"Order placed successfully! <AND     > your order details are username = {username},  Plastic_type = {types},   Shape = {shapes}  "
+    except Exception:
         return "Invalid value(s)! "

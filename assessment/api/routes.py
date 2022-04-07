@@ -1,16 +1,17 @@
 from flask import Blueprint
 from services.logics import add_user, getuserinfo, login, prod_type, wasteprods, plastictype_add, shape_add, \
-    selling_prod, user_things_cost, sampleorder
+    selling_prod, user_things_cost, sampleorder, authorisation
 
 bp = Blueprint("bp", __name__)
 
 
 @bp.route('/createuser', methods=["POST"])
 def add_user1():
-    return add_user()
+    return add_user(send_data=None)
 
 
 @bp.route('/Admin/getusers', methods=["GET"])
+@authorisation
 def getuserinfo1():
     return getuserinfo()
 
