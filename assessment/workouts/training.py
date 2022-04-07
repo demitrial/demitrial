@@ -1,14 +1,3 @@
-import json
-import os
-import time
-from datetime import datetime
-
-from flask import jsonify
-from hellosign_sdk import HSClient
-import PyPDF2
-from models.entity import Hellosign_events, db
-from sqlalchemy import null, true, false
-
 di = {}
 normal = {'event': {'event_type': 'signature_request_sent', 'event_time': '1647692106',
                     'event_hash': 'cc35446ac3557014fe8aa9a7827df990d4e75fcf4734d1f4b177a6a13f4bc56b',

@@ -1,7 +1,6 @@
 from flask import Blueprint
 from services.logics import add_user, getuserinfo, login, prod_type, wasteprods, plastictype_add, shape_add, \
     selling_prod, userviewcost, sampleorder
-from workouts.training import hellosign_event
 
 bp = Blueprint("bp", __name__)
 
@@ -55,9 +54,5 @@ def userviewcost1():
 def sampleorder1():
     return sampleorder()
 
-
-@bp.route('/hellosign', methods=["POST"])
-def helosign_get():
-    return hellosign_event()
 
 
