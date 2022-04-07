@@ -1,6 +1,6 @@
 from flask import Blueprint
 from services.logics import add_user, getuserinfo, login, prod_type, wasteprods, plastictype_add, shape_add, \
-    selling_prod, userviewcost, sampleorder
+    selling_prod, user_things_cost, sampleorder
 
 bp = Blueprint("bp", __name__)
 
@@ -46,8 +46,8 @@ def selling_prod1():
 
 
 @bp.route('/userview', methods=["GET"])
-def userviewcost1():
-    return userviewcost()
+def user_view_cost():
+    return user_things_cost()
 
 
 @bp.route('/ordersample', methods=["POST"])

@@ -155,49 +155,31 @@ def selling_prod():
         var = request.args.get("types")
         var1 = request.args.get("shapes")
         typeslist = []
-        for i in Plastictype.query.all():
-            typeslist.append(i.types)
-            if i.types == var:
+        for pls_types in Plastictype.query.all():
+            typeslist.append(pls_types.types)
+            if pls_types.types == var:
                 var_types = Plastictype.query.filter_by(types=var).first()
 
-                shapelist = []
+                shapes_list = []
                 for j in Shapetype.query.all():
-                    shapelist.append(j.shapes)
+                    shapes_list.append(j.shapes)
                     if j.shapes == var1:
                         var1_shapes = Shapetype.query.filter_by(shapes=var1).first()
 
                         var3 = Sellingprod(plastic=var_types, shape=var1_shapes)
                         db.session.add(var3)
                         db.session.commit()
-                        return "Recycled products added seccessfully! "
-                return f"Invalid shape ., Predefined shapes are {shapelist} Enter one of them!! "
-        return f"Invalid plastic_type and ., And only available types are {typeslist} please chose one of them!! "
+                        return "Recycled products added successfully! "
+                    elif var1 not in j.shapes:
+                        return f"Invalid shape ., Predefined shapes are {shapes_list} Enter one of them!! "
+            else:
+                return f"Invalid plastic_type and ., And only available types are {typeslist} please chose one of them!! "
     except exc.IntegrityError:
-        return f"Entered type or shape is already exixts !"
-    var = request.args.get("types")
-    var1 = request.args.get("shapes")
-    typeslist = []
-    for i in Plastictype.query.all():
-        typeslist.append(i.types)
-        if i.types == var:
-            var_types = Plastictype.query.filter_by(types=var).first()
-
-            shapelist = []
-            for j in Shapetype.query.all():
-                shapelist.append(j.shapes)
-                if j.shapes == var1:
-                    var1_shapes = Shapetype.query.filter_by(shapes=var1).first()
-
-                    var3 = Sellingprod(plastic=var_types, shape=var1_shapes)
-                    db.session.add(var3)
-                    db.session.commit()
-                    return "Recycled products added seccessfully! "
-            return f"Invalid shape ., Predefined shapes are {shapelist} Enter one of them!! "
-    return f"Invalid plastic_type and ., And only available types are {typeslist} please chose one of them!! "
+        return f"Entered type or shape is already exists !"
 
 
-def userviewcost():
-    global fun1
+def user_things_cost():
+    fun1 = None
     call = request.args.get("shapes")
     join = db.session.query(Plastictype, Shapetype, Sellingprod).filter(
         Plastictype.plastictype_id == Sellingprod.plastictype_id).filter(
@@ -224,15 +206,15 @@ def userviewcost():
 
 def sampleorder():
     try:
-        va = request.args.get("username")
-        var = request.args.get("types")
-        var1 = request.args.get("shapes")
-        var_trial = Users.query.filter_by(username=va).first()
-        var_type = Plastictype.query.filter_by(types=var).first()
-        var1_shape = Shapetype.query.filter_by(shapes=var1).first()
+        username = request.args.get("username")
+        types = request.args.get("types")
+        shapes = request.args.get("shapes")
+        var_trial = Users.query.filter_by(username=username).first()
+        var_type = Plastictype.query.filter_by(types=types).first()
+        var1_shape = Shapetype.query.filter_by(shapes=shapes).first()
         var3 = Order(info=var_trial, typeinfo=var_type, shapeinfo=var1_shape)
         db.session.add(var3)
         db.session.commit()
-        return f"Order placed successfully! <AND     > your order details are username = {va},  Plastic_type = {var},   Shape = {var1}  "
+        return f"Order placed successfully! <AND     > your order details are username = {va},  Plastic_type = {var},   Shape = {shapes}  "
     except exc.IntegrityError:
         return "Invalid value(s)! "

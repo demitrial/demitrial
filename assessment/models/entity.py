@@ -51,11 +51,3 @@ class Order(db.Model):
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'), nullable=False)
     plastictype_id = db.Column(db.Integer, db.ForeignKey('plastictype.plastictype_id'), nullable=False)
     shape_id = db.Column(db.Integer, db.ForeignKey('shapetype.shape_id'), nullable=False)
-
-
-class Hellosign_events(db.Model):
-    sno = db.Column(db.Integer, primary_key=True)
-    event_type = db.Column(db.String(50))
-    signature_request_id = db.Column(db.String(50))
-    event_time = db.Column(db.String(50))
-
